@@ -1,0 +1,15 @@
+[Unit]
+Description=go-ethereum
+After=syslog.target network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/geth --rpc --rpcaddr "0.0.0.0" --rpcport "8545" --rpcapi "eth,net,web3" --rpccorsdomain "*" --txpool.globalqueue 100000
+WorkingDirectory=/home/centos
+KillMode=process
+Restart=always
+User=centos
+Group=centos
+
+[Install]
+WantedBy=multi-user.target
