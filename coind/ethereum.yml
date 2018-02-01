@@ -1,0 +1,7 @@
+---
+- hosts: all
+  sudo: yes
+  roles:
+    - geth
+  environment:
+    PATH: "/usr/local/go/bin:/usr/bin:/bin"

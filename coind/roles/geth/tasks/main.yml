@@ -1,0 +1,25 @@
+---
+- name: yum add repos
+  yum: name="{{ item }}" state=present
+  with_items:
+    - epel-release
+- name: yum install
+  yum: name="{{ item }}" state=present
+  with_items:
+    - git
+    - ntp
+    - make
+    - gmp-devel
+    - gcc-c++
+- name: golang download
+  get_url: url=https://storage.googleapis.com/golang/go1.7.linux-amd64.tar.gz dest=/tmp mode=0440
+- name: golang extract
+  unarchive: src=/tmp/go1.7.linux-amd64.tar.gz dest=/usr/local copy=no
+- name: SELinux disable
+  selinux: state=disabled
+- name: ethereum git clone
+  git: repo=https://github.com/ethereum/go-ethereum.git dest=/tmp/go-ethereum version=v1.7.3
+- name: ethereum make
+  command: make geth chdir=/tmp/go-ethereum
+- name: ethereum install
+  shell: cp build/bin/geth /usr/local/bin chdir=/tmp/go-ethereum
